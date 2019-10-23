@@ -1,0 +1,32 @@
+def construct_data(self):
+      zero_data = (int(self.class_0_construction.samples_slider.text_field.text()), # to sa ilosci sampli i modow
+                  int(self.class_0_construction.modes_slider.text_field.text()))
+      one_data = (int(self.class_1_construction.samples_slider.text_field.text()),
+                  int(self.class_1_construction.modes_slider.text_field.text()))
+
+
+      number_samples_per_class = [zero_data[0] * zero_data[1], one_data[0] * one_data[1]]
+      total_samples = number_samples_per_class[0] + number_samples_per_class[1]
+
+      Y = np.zeros(shape=(total_samples,))
+      X = np.zeros(shape=(total_samples, 2))
+
+      X, Y = self.construct_arrays(0, zero_data, X, Y, 0)
+      X, Y = self.construct_arrays(zero_data[0] * zero_data[1], one_data, X, Y, 1)
+
+      return X, Y
+
+
+
+
+  def construct_arrays(self, start_index, data, x, y, class_label):
+      mu_range = 40
+      for i in range(data[1]):
+          mu = [random.uniform(-mu_range, mu_range), random.uniform(-mu_range, mu_range)]
+          xi = np.random.randn(data[0], 2) + mu
+          yi = np.ones(shape=(data[0], )) * class_label
+          x[start_index: start_index + data[0], :] = xi
+          y[start_index: start_index + data[0]] = yi
+          start_index += data[0]
+
+      return x, y
