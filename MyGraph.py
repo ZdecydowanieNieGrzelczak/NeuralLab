@@ -28,10 +28,12 @@ class MyGraph(FigureCanvas):
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
 
-    def plot(self, feat0=0, feat1=1):
+    def plot(self, eval_value):
         # plt.hide()
         X = self.x_data
         Y = self.y_data
+        print("eval in plot : ", eval_value)
+
 
         cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
         cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
@@ -43,7 +45,7 @@ class MyGraph(FigureCanvas):
         xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                          np.arange(y_min, y_max, h))
 
-        self.calculate_decision_boundry(X, Y)
+        self.calculate_decision_boundry(X, Y, eval_value)
 
         Z = self.neuron.evaluate(np.c_[xx.ravel(), yy.ravel()])
 
@@ -75,8 +77,9 @@ class MyGraph(FigureCanvas):
     def set_y_data(self, values):
         self.y_data = values
 
-    def calculate_decision_boundry(self, X, Y):
+    def calculate_decision_boundry(self, X, Y, eval_value):
         self.neuron.set_y_data(Y)
         self.neuron.set_x_data(X)
+        self.neuron.set_eval_function(eval_value)
         self.neuron.create_weights_matrix()
         self.neuron.train()

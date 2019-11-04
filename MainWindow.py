@@ -8,6 +8,7 @@ from PyQt5.QtCore import (Qt, pyqtSignal)
 from MyGraph import MyGraph
 from MyClassConstructor import MyClassConstructor
 from Neuron import Neuron
+from CustomButton import CustomButton
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -29,6 +30,13 @@ class MainWindow(QWidget):
         self.class_0_construction = MyClassConstructor(self, 100, 100, 'color: red', 0)
         self.graph = MyGraph(self)
         self.graph_button = QPushButton('Create graph', self)
+        self.Heavside_Button = CustomButton(self, "Heavside", 0)
+        self.Sigmoid_Button = CustomButton(self, "Sigmoid", 1)
+        self.ReLu_Button = CustomButton(self, "ReLu", 2)
+        self.leaky_ReLu_Button = CustomButton(self, "leaky_ReLu", 3)
+        self.current_button = self.Heavside_Button
+
+
         self.init_ui()
 
     def init_ui(self):
@@ -36,11 +44,27 @@ class MainWindow(QWidget):
         self.setFixedSize(800, 600)
         self.init_graph(200, 250)
         self.init_button()
+        self.init_radio_buttons()
+
+
+    def init_radio_buttons(self):
+        self.Heavside_Button.setChecked(True)
+        self.Heavside_Button.toggled.connect(self.OnClicked)
+        self.Sigmoid_Button.toggled.connect(self.OnClicked)
+        self.ReLu_Button.toggled.connect(self.OnClicked)
+        self.leaky_ReLu_Button.toggled.connect(self.OnClicked)
 
 
     def init_graph(self, x_val, y_val):
         self.graph.move(x_val, y_val)
         self.graph.setVisible(False)
+
+    def OnClicked(self):
+        print("button clicked")
+        if self.sender().isChecked():
+            self.current_button = self.sender()
+            print("button changed")
+            print("Current button value = ", self.current_button.act_func_index)
 
 
     def slider_value_changed(self, value):
@@ -66,7 +90,7 @@ class MainWindow(QWidget):
         self.graph.set_x_data(X)
         self.graph.set_y_data(Y)
 
-        self.graph.plot()
+        self.graph.plot(self.current_button.act_func_index)
         # self.graph.setVisible(True)
 
 
