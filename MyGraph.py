@@ -8,9 +8,8 @@ from matplotlib.colors import ListedColormap
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
-
-from Neuron import Neuron
-
+    
+from NeuralNet import NeuralNet
 
 
 
@@ -24,19 +23,22 @@ class MyGraph(FigureCanvas):
         self.x_data = []
         self.ax = self.figure.add_subplot(111)
         self.y_data = []
-        self.neuron = Neuron(0.08, 70)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        self.brain = NeuralNet()
 
     def plot(self, eval_value):
         # plt.hide()
         X = self.x_data
         Y = self.y_data
-        print("eval in plot : ", eval_value)
+        # print("eval in plot : ", eval_value)
 
 
         cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
         cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
+        # cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA'])
+        # cmap_bold = ListedColormap(['#FF0000', '#00FF00'])
+
 
         x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
         y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1

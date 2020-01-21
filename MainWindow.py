@@ -9,6 +9,7 @@ from MyGraph import MyGraph
 from MyClassConstructor import MyClassConstructor
 from Neuron import Neuron
 from CustomButton import CustomButton
+from NeuralNet import NeuralNet
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -60,11 +61,11 @@ class MainWindow(QWidget):
         self.graph.setVisible(False)
 
     def OnClicked(self):
-        print("button clicked")
+        # print("button clicked")
         if self.sender().isChecked():
             self.current_button = self.sender()
-            print("button changed")
-            print("Current button value = ", self.current_button.act_func_index)
+            # print("button changed")
+            # print("Current button value = ", self.current_button.act_func_index)
 
 
     def slider_value_changed(self, value):
@@ -90,7 +91,7 @@ class MainWindow(QWidget):
         self.graph.set_x_data(X)
         self.graph.set_y_data(Y)
 
-        self.graph.plot(self.current_button.act_func_index)
+        # self.graph.plot(self.current_button.act_func_index)
         # self.graph.setVisible(True)
 
 
