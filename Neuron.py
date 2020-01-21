@@ -1,9 +1,9 @@
 import numpy as np
-import random
+import random, time
 
 class Neuron:
 
-    def __init__(self, learning_step = 0.1, eval_fucn = 0, bias_range = 2):
+    def __init__(self, learning_step = 0.05, eval_fucn = 1, bias_range = 2):
         self.eval_function_matrix = [ self.Heavside, self.Sigmoid, self.ReLu, self.leaky_ReLu ]
         self.eval_function_der = [ self.Heavside_der, self.Sigmoid_der, self.ReLu_der, self.ReLu_der ]
         self.learning_step = learning_step
@@ -51,7 +51,6 @@ class Neuron:
 
     def calculate_activation_level(self):
         self.activation_level = self.eval_function(self.value + self.bias)
-        self.value = 0
 
 
 
@@ -116,12 +115,24 @@ class Neuron:
                  connection.weight * self.derivative_of_eval(self.value) * self.activation_level \
                      * self.learning_step
             total_error += connection.weight * connection.destination_neuron.error
+
             connection.weight -= weight_diff
+
 
         self.bias -= self.learning_step * total_error * \
              self.derivative_of_eval(self.value) * self.activation_level
+        if abs(self.bias) > 8:
+            print("Bias higher than 8!!")
         self.error = total_error
+        self.value = 0
 
 
     def set_total_error(self, error):
-        self.error = error        
+        self.error = error
+        self.value = 0
+
+
+    def gather_input(self, value):
+        if(abs(value) > 20):
+            print("gathering too high values!")
+        self.value += value

@@ -91,7 +91,7 @@ class MainWindow(QWidget):
         self.graph.set_x_data(X)
         self.graph.set_y_data(Y)
 
-        # self.graph.plot(self.current_button.act_func_index)
+        self.graph.plot(self.current_button.act_func_index)
         # self.graph.setVisible(True)
 
 
@@ -119,7 +119,7 @@ class MainWindow(QWidget):
 
 
     def construct_arrays(self, start_index, data, x, y, class_label):
-        mu_range = 5
+        mu_range = 3
         for i in range(data[1]):
             mu = [random.uniform(-mu_range, mu_range), random.uniform(-mu_range, mu_range)]
             xi = np.random.randn(data[0], 2) + mu
