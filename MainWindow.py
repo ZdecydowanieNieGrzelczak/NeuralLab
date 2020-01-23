@@ -119,7 +119,7 @@ class MainWindow(QWidget):
 
 
     def construct_arrays(self, start_index, data, x, y, class_label):
-        mu_range = 3
+        mu_range = 8
         for i in range(data[1]):
             mu = [random.uniform(-mu_range, mu_range), random.uniform(-mu_range, mu_range)]
             xi = np.random.randn(data[0], 2) + mu

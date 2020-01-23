@@ -3,7 +3,7 @@ import random
 
 
 class Connection():
-    def __init__(self, neuron_from=None, neuron_to=None, weight_range=2):
+    def __init__(self, neuron_from=None, neuron_to=None, weight_range=4):
         self.weight = random.uniform(-weight_range, weight_range)
         self.destination_neuron = neuron_to
         self.source_neuron = neuron_from

@@ -33,6 +33,7 @@ class MyGraph(FigureCanvas):
         X, Y = sklearn.utils.shuffle(self.x_data, self.y_data, random_state=0)
         # print("eval in plot : ", eval_value)
 
+        self.brain = NeuralNet(eval_value)
 
 
         cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
@@ -57,15 +58,15 @@ class MyGraph(FigureCanvas):
         # print(xx)
         # print(yy)
 
-        # z = Z.reshape(xx.shape)
+        Z = np.reshape(Z, xx.shape)
 
 
-        # plt.figure()
-        # plt.pcolormesh(xx, yy, Z, cmap=cmap_light)
-        #
-        # plt.scatter(X[:, 0], X[:, 1], c=Y, cmap=cmap_bold)
-        # plt.xlim(xx.min(), xx.max())
-        # plt.ylim(yy.min(), yy.max())
+        plt.figure()
+        plt.pcolormesh(xx, yy, Z, cmap=cmap_light)
+        
+        plt.scatter(X[:, 0], X[:, 1], c=Y, cmap=cmap_bold)
+        plt.xlim(xx.min(), xx.max())
+        plt.ylim(yy.min(), yy.max())
 
 
 
@@ -84,7 +85,10 @@ class MyGraph(FigureCanvas):
         # self.neuron.create_weights_matrix()
         # self.neuron.train()
 
-        for i in range(len(self.x_data)):
-            self.brain.pass_value_to_input_layer(self.x_data[i])
+        new_Y = self.brain.mock_one_hot(Y)
+
+
+        for i in range(len(X)):
+            self.brain.pass_value_to_input_layer(X[i])
             self.brain.forward_propagation()
-            self.brain.backpropagate(self.x_data[i])
+            self.brain.backpropagate(new_Y[i])

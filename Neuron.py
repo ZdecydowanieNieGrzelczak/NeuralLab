@@ -7,7 +7,7 @@ class Neuron:
         self.eval_function_matrix = [ self.Heavside, self.Sigmoid, self.ReLu, self.leaky_ReLu ]
         self.eval_function_der = [ self.Heavside_der, self.Sigmoid_der, self.ReLu_der, self.ReLu_der ]
         self.learning_step = learning_step
-        self.bias = random.uniform(-bias_range, bias_range)
+        # self.bias = random.uniform(-bias_range, bias_range)
         self.eval_function = self.eval_function_matrix[eval_fucn]
         self.derivative_of_eval = self.eval_function_der[eval_fucn]
         self.value = 0
@@ -50,7 +50,9 @@ class Neuron:
     #         return 0
 
     def calculate_activation_level(self):
-        self.activation_level = self.eval_function(self.value + self.bias)
+        self.activation_level = self.eval_function(self.value)
+        # self.activation_level = self.eval_function(self.value + self.bias)
+
 
 
 
@@ -116,13 +118,11 @@ class Neuron:
                      * self.learning_step
             total_error += connection.weight * connection.destination_neuron.error
 
-            connection.weight -= weight_diff
+            connection.weight += weight_diff
 
 
-        self.bias -= self.learning_step * total_error * \
-             self.derivative_of_eval(self.value) * self.activation_level
-        if abs(self.bias) > 8:
-            print("Bias higher than 8!!")
+        # self.bias -= self.learning_step * total_error * \
+        #      self.derivative_of_eval(self.value) * self.activation_level
         self.error = total_error
         self.value = 0
 
@@ -133,6 +133,4 @@ class Neuron:
 
 
     def gather_input(self, value):
-        if(abs(value) > 20):
-            print("gathering too high values!")
         self.value += value

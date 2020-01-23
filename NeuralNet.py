@@ -7,29 +7,30 @@ import random
 
 
 class NeuralNet():
-    def __init__(self, dimensions_of_hidden_layer=[4, 3]):
+    def __init__(self, activation_func = 1, dimensions_of_hidden_layer=[4, 3]):
         self.input_layer = []
         self.hidden_layer = []
         self.output_layer = []
         self.dims_of_hidden_layer = dimensions_of_hidden_layer
-        self.create_neural_net(2, dimensions_of_hidden_layer, 2)
+        self.create_neural_net(2, dimensions_of_hidden_layer, 2, activation_func)
         self.activation_func = None
         self.result = []
         self.predict_error = 0
         self.counter = 0
 
-    def create_neural_net(self, number_of_inputs=2, dims_of_hidden_layer=[4,3], number_of_outputs=2):
+    def create_neural_net(self, number_of_inputs=2, dims_of_hidden_layer=[4,3], number_of_outputs=2, activation_func = 1):
+        learning_step = 0.1
         for i in range(number_of_inputs):
-            self.input_layer.append(Neuron())
+            self.input_layer.append(Neuron(learning_step, activation_func))
 
         for x in range(len(dims_of_hidden_layer)):
             temp_layer = []
             for y in range(dims_of_hidden_layer[x]):
-                temp_layer.append(Neuron())
+                temp_layer.append(Neuron(learning_step, activation_func))
             self.hidden_layer.append(temp_layer)
         
         for i in range(number_of_outputs):
-            self.output_layer.append(Neuron())
+            self.output_layer.append(Neuron(learning_step, activation_func))
 
         self.create_connections()
 
@@ -37,11 +38,11 @@ class NeuralNet():
     def backpropagate(self, expected_values):
         # self.predict_error = self.calculate_guess_error(expected_values)
 
-
         # for neuron in self.output_layer:
             # neuron.calculate_error(self.predict_error)
         for i in range(len(self.output_layer)):
-            self.output_layer[i].set_total_error( (self.result[i] - expected_values[i]))
+            # self.output_layer[i].set_total_error( (self.result[i] - expected_values[i]))
+            self.output_layer[i].set_total_error( (expected_values[i] - self.result[i]))
 
 
         nr_of_hidden_layers = len(self.hidden_layer)
@@ -85,6 +86,7 @@ class NeuralNet():
 
         for output_neuron in self.output_layer:
             result_values_total += output_neuron.value
+            # print("ereras ", result_values_total)
 
         for output_neuron in self.output_layer:
             output_neuron.activation_level = output_neuron.value / result_values_total
@@ -135,3 +137,13 @@ class NeuralNet():
 
         for neuron in self.output_layer:
             neuron.value = 0
+
+    def mock_one_hot(self, Y):
+        new_Y = []
+        for i in range(len(Y)):
+            temp = [0, 0]
+            temp[int(Y[i])] = 1
+            new_Y.append(temp)
+        
+
+        return new_Y
